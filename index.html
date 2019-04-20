@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+        #map {
+            height: 100%;
+        }
+        
+        button{
+            position: absolute;
+            color: red;
+            font-weight: bold;
+            height: 30px;
+            width: 150px;
+            z-index: 100;
+        }    
+        
+        #worldZoomButton{
+            top: 70px;
+            left: 10px;
+        }
+        
+        #defaultZoomButton{
+            top: 110px;
+            left: 10px;
+        }
+        
+        #buildingZoomButton{
+            top: 150px;
+            left: 10px;
+        }
+
+        #app{
+            position: absolute;
+            z-index: 100;
+            top: 200px;
+            left: 10px;
+            background-color: white;
+            padding: 10px
+        }
+
+    </style>
+    
+  </head>
+  <body>
+    <div id="map"></div>
+    <p><button id = "worldZoomButton">WorldZoom(1)</button></p>
+    <p><button id = "defaultZoomButton">DefaultZoom(16)</button></p>
+    <p><button id = "buildingZoomButton">BuildingZoom(20)</button></p>
+
+    <div id = "app"> 
+            <select id = "sat" name = "observe" size = "10" v-model = "selected">
+                    <option v-for = "o in observatories" v-bind:value = "o">{{o.name}}</option>
+            </select>
+            <hr>
+            <div>
+                <h1 v-link>{{selected.name}}</h1>
+                <p>StartTime: <span v-link>{{selected.start}}</span></p>
+                <p>EndTime: <span v-link>{{selected.end}}</span></p>
+            </div>
+            <input type = "range" min = "1" max= "100" value = "1" class = "slider" tick = "0.01"> <span>0</span>
+            <br>
+            <button id = "plotButton" v-on:click = "plot"> Plot</button>
+            <hr>
+    </div>
+
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+    <script src="https://unpkg.com/@babel/polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+
+    <script src = "js/vue.js"></script>
+    <script src="js/nasa.js"></script>
+    <script src = "js/main.js"></script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPaeHLaP4wtPBZATsnq-B2uKuAHb52QKo&callback=initMap"
+    async defer></script>
+  </body>
+</html>

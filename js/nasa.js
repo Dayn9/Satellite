@@ -1,0 +1,129 @@
+
+const APIKEY = "qrWL5i54WiZdxSZju5asfUvvLnnfC3ZP8iufQxFW"
+const SEARCH0 = "https://api.nasa.gov/planetary/apod?api_key="
+const sscUrl = "https://sscweb.sci.gsfc.nasa.gov/WS/sscr/2"
+
+let earthRadiusKm = 6371;
+
+const testRequest = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><DataRequest xmlns="http://sscweb.gsfc.nasa.gov/schema"><TimeInterval><Start>2014-01-01T20:00:00.000Z</Start><End>2014-01-02T00:00:00.000Z</End></TimeInterval><BFieldModel><InternalBFieldModel>IGRF-10</InternalBFieldModel><ExternalBFieldModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Tsyganenko89cBFieldModel"><KeyParameterValues>KP3_3_3</KeyParameterValues></ExternalBFieldModel><TraceStopAltitude>100</TraceStopAltitude></BFieldModel><Satellites><Id>barrel2t</Id><ResolutionFactor>2</ResolutionFactor></Satellites><OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>'
+
+const rPart1 = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><DataRequest xmlns="http://sscweb.gsfc.nasa.gov/schema"><TimeInterval><Start>';
+const rPart2 = '</Start><End>'
+const rPart3 = '</End></TimeInterval><BFieldModel><InternalBFieldModel>IGRF-10</InternalBFieldModel><ExternalBFieldModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Tsyganenko89cBFieldModel"><KeyParameterValues>KP3_3_3</KeyParameterValues></ExternalBFieldModel><TraceStopAltitude>100</TraceStopAltitude></BFieldModel><Satellites><Id>';
+const rPart4 = '</Id><ResolutionFactor>2</ResolutionFactor></Satellites><OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>';
+
+let satellites = [];
+
+function getData(){
+
+    let request = rPart1 + app.selected.start + 
+                  rPart2 + "1998-06-24T23:36:00.000Z" + 
+                  rPart3 + app.selected.satId +
+                  rPart4; 
+    console.log(request);
+
+    $.ajax({
+        type: 'POST',
+        url: sscUrl + '/locations',
+        data: request,
+        dataType: 'xml',
+        contentType: 'application/xml',
+        processData: false,
+        success: dataLoaded,
+        error: dataError
+    });
+}  
+
+function dataLoaded(myresult){
+
+    app.result = [];
+
+    $('Data', myresult).each(function() {
+
+        let satId = $(this).find('Id').text();
+        //let satName = sats[satId].Name;
+
+        let coordSystem = $(this).find('CoordinateSystem').text();
+
+        let time = $(this).find('Time').map(function() {
+            return $(this).text();
+        }).get();
+        let x = $(this).find('X').map(function() {
+            return $(this).text()/* / earthRadiusKm */;
+        }).get();
+        let y = $(this).find('Y').map(function() {
+            return $(this).text()/* / earthRadiusKm */;
+        }).get();
+        let z = $(this).find('Z').map(function() {
+            return $(this).text()/* / earthRadiusKm */;
+        }).get();
+
+        app.result.push({
+            satId: satId,
+            //satName: satName,
+            coordSystem: coordSystem,
+            time: time,
+            x: x,
+            y: y,
+            z: z 
+        });
+        
+        for(let i = 0; i < x.length; i++){
+            addMarker(getLatitude(z[i]), getLongitude(x[i], y[i]), "Satelite at time: " + time[i])
+        }
+    });
+
+    console.log(app.result)
+}
+  
+function dataError(e){
+    console.log("An error occured");
+}
+
+function displayObservatories(observatories){
+    let data = observatories.Observatory[1]
+    for(let i = 0; i < data.length; i++)
+        app.observatories.push({
+            satId: data[i].Id,
+            name: data[i].Name,
+            start: data[i].StartTime[1].substring(0, 23) + "Z",
+            end: data[i].EndTime[1].substring(0,23) + "Z"
+        });
+
+    app.selected = app.observatories[0];
+    
+    getData();
+}
+
+function displayGroundStations(stations){
+}
+
+function getLatitude(z){
+    return Math.asin(z / earthRadiusKm) * earthRadiusKm
+}
+
+function getLongitude(x,y){
+    return(Math.atan2(y, x)) * earthRadiusKm;
+}
+
+$(document).ready(function() {
+    /*$('#dataTableVisibility').click(function() {
+        $('#data').toggle();
+    });*/
+    document.body.style.cursor = 'wait';
+    $.get(sscUrl + '/observatories', displayObservatories, 'json');
+    //$.get(sscUrl + '/groundStations', displayGroundStations, 'json');
+});
+
+
+
+/*
+https://stackoverflow.com/questions/1185408/converting-from-longitude-latitude-to-cartesian-coordinates
+
+lat = asin(z / R)
+lon = atan2(y, x)
+
+x = R * cos(lat) * cos(lon)
+y = R * cos(lat) * sin(lon)
+z = R *sin(lat)
+*/
