@@ -15,6 +15,7 @@ const app = new Vue({
         },
         methods: {
                 plot: function(){
+                        //handle the range checking here in the future
                         console.log("plotting data");
                         getData();
                 },

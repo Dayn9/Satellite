@@ -1,5 +1,7 @@
     var map;
     let infowindow;
+
+    let path = [];
     
      function makeInfoWindow(position,msg){   
             if(infowindow) infowindow.close(); 
@@ -8,13 +10,27 @@
     
     function addMarker(latitude, longitude, title) {  
             let position = {lat:latitude,lng:longitude}; 
-            let marker = new google.maps.Marker({position: position, map:map});   marker.setTitle(title); 
-            //console.log(latitude + " " + longitude);
+            if(position.lat) { 
+                console.log(position);
+                path.push(position);
+            } 
+            
+            //let marker = new google.maps.Marker({position: position, map:map});   marker.setTitle(title); 
             // Add a listener for the click event 
-            //google.maps.event.addListener(marker, 'click', function(e){ 
-            //makeInfoWindow(this.position,this.title); });
-
-        } 
+            /*google.maps.event.addListener(marker, 'click', function(e){ 
+            makeInfoWindow(this.position,this.title); });
+            */
+    } 
+    function drawLine(){
+        console.log(path)
+        let poly = new google.maps.Polygon({
+            paths: path,
+            strokeColor : '#FFFFFF',
+            strokeWeight : 2,
+            fillOpacity: 0
+        });
+        poly.setMap(map);
+    }
         
     function initMap() {
         let mapOptions = {

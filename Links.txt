@@ -3,3 +3,5 @@ https://sscweb.sci.gsfc.nasa.gov/WebServices/REST/#Get_Locations_POST
 https://sscweb.sci.gsfc.nasa.gov/WebServices/REST/jQueryExample3.html
 
 http://www.webglearth.org/
+
+https://developers.google.com/maps/documentation/javascript/tutorial

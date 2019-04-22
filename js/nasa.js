@@ -1,4 +1,3 @@
-
 const APIKEY = "qrWL5i54WiZdxSZju5asfUvvLnnfC3ZP8iufQxFW"
 const SEARCH0 = "https://api.nasa.gov/planetary/apod?api_key="
 const sscUrl = "https://sscweb.sci.gsfc.nasa.gov/WS/sscr/2"
@@ -10,7 +9,7 @@ const rPart2 = '</Start><End>'
 const rPart3 = '</End></TimeInterval><BFieldModel><InternalBFieldModel>IGRF-10</InternalBFieldModel><ExternalBFieldModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Tsyganenko89cBFieldModel"><KeyParameterValues>KP3_3_3</KeyParameterValues></ExternalBFieldModel><TraceStopAltitude>100</TraceStopAltitude></BFieldModel><Satellites><Id>';
 const rPart4 = '</Id><ResolutionFactor>2</ResolutionFactor></Satellites><OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>Geo</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Geo</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Geo</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>';
 
-let satellites = [];
+let satellites = []; //list of all the available satelites
 
 function getData(){
 
@@ -32,10 +31,12 @@ function getData(){
     });
 }  
 
+//start of seacrh period
 function getStartTime(){
     return app.selectedYear + app.selected.start.substring(4, 24);
 }
 
+//end of search period
 function getEndTime(){
     if(app.selectedYear == parseInt(app.selected.end.substring(0,4))){
         return selected.end;
@@ -83,13 +84,17 @@ function dataLoaded(myresult){
     for(let i = 0; i < app.result[0].x.length; i++){
         addMarker(getLatitude(app.result[0].z[i] / earthRadiusKm), getLongitude(app.result[0].x[i] / earthRadiusKm, app.result[0].y[i]/earthRadiusKm), "Satelite at time: " + app.result[0].time[i])
     }
+
+    drawLine();
     
 }
 
+//error
 function dataError(e){
     console.log("An error occured");
 }
 
+//get the satelite information
 function displayObservatories(observatories){
     let data = observatories.Observatory[1]
     for(let i = 0; i < data.length; i++)
@@ -108,10 +113,12 @@ function displayObservatories(observatories){
 function displayGroundStations(stations){
 }
 
+//converts geo coordinates to latitude
 function getLatitude(z){
     return (Math.acos(z) * 180 / Math.PI) - 90;
 }
 
+//converts geo coordinates to longitude
 function getLongitude(x,y){
     return Math.atan2(y, x) * 180 / Math.PI;
 }
