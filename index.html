@@ -57,7 +57,8 @@
     <p><button id = "buildingZoomButton">BuildingZoom(20)</button></p>
 
     <div id = "app"> 
-            <select id = "sat" name = "observe" size = "10" v-model = "selected">
+            <h3>Satellite Select</h3>
+            <select id = "sat" name = "observe" size = "10" v-model = "selected" v-on:click = "getYears">
                     <option v-for = "o in observatories" v-bind:value = "o">{{o.name}}</option>
             </select>
             <hr>
@@ -66,7 +67,10 @@
                 <p>StartTime: <span v-link>{{selected.start}}</span></p>
                 <p>EndTime: <span v-link>{{selected.end}}</span></p>
             </div>
-            <input type = "range" min = "1" max= "100" value = "1" class = "slider" tick = "0.01"> <span>0</span>
+            <h3>Year Select</h3>
+            <select id = "year" name = "year" v-model = "selectedYear">
+                <option v-for = "y in years" v-bind:value = "y">{{y}}</option>
+            </select>
             <br>
             <button id = "plotButton" v-on:click = "plot"> Plot</button>
             <hr>

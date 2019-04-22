@@ -1,4 +1,4 @@
-     var map;
+    var map;
     let infowindow;
     
      function makeInfoWindow(position,msg){   
@@ -19,20 +19,15 @@
     function initMap() {
         let mapOptions = {
             center: {lat: 43.083848, lng: -77.6799},
-            zoom: 16,
+            zoom: 2,
             mapTypeId: google.maps.MapTypeId.ROADMA
         }  
         
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        /*
-        for(let i = 0; i < coffeeShops.length; i++){
-            addMarker(coffeeShops[i].latitude, coffeeShops[i].longitude, coffeeShops[i].title);
-        }
-        */
-
         map.mapTypeId = 'satellite'; map.setTilt(45); 
     }
+
 document.querySelector("#worldZoomButton").onclick = function(){map.setZoom(1);};
 document.querySelector("#defaultZoomButton").onclick = function(){map.setZoom(16);};
 document.querySelector("#buildingZoomButton").onclick = function(){map.setZoom(20);};        

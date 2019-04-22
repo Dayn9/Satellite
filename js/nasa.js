@@ -14,8 +14,8 @@ let satellites = [];
 
 function getData(){
 
-    let request = rPart1 + app.selected.start + 
-                  rPart2 + "1998-06-24T23:36:00.000Z" + 
+    let request = rPart1 + getStartTime() + 
+                  rPart2 + getEndTime() + 
                   rPart3 + app.selected.satId +
                   rPart4; 
     console.log(request);
@@ -31,6 +31,17 @@ function getData(){
         error: dataError
     });
 }  
+
+function getStartTime(){
+    return app.selectedYear + app.selected.start.substring(4, 24);
+}
+
+function getEndTime(){
+    if(app.selectedYear == parseInt(app.selected.end.substring(0,4))){
+        return selected.end;
+    }
+    return (app.selectedYear + 1) + app.selected.start.substring(4,24);
+}
 
 function dataLoaded(myresult){
 
@@ -70,13 +81,11 @@ function dataLoaded(myresult){
     console.log(app.result)
 
     for(let i = 0; i < app.result[0].x.length; i++){
-        console.log(app.result[0].x[i] / earthRadiusKm + " " + app.result[0].y[i] / earthRadiusKm + " " + app.result[0].z[i] / earthRadiusKm)
         addMarker(getLatitude(app.result[0].z[i] / earthRadiusKm), getLongitude(app.result[0].x[i] / earthRadiusKm, app.result[0].y[i]/earthRadiusKm), "Satelite at time: " + app.result[0].time[i])
     }
-
     
 }
-  
+
 function dataError(e){
     console.log("An error occured");
 }
@@ -92,8 +101,8 @@ function displayObservatories(observatories){
         });
 
     app.selected = app.observatories[0];
-    
-    getData();
+    app.getYears();
+    console.log(app.selected);
 }
 
 function displayGroundStations(stations){
