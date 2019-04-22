@@ -10,6 +10,7 @@ const app = new Vue({
                         start: 0,
                         end: 0,
                 }
+                
         },
         methods: {
                 plot: function(){

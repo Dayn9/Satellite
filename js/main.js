@@ -9,10 +9,10 @@
     function addMarker(latitude, longitude, title) {  
             let position = {lat:latitude,lng:longitude}; 
             let marker = new google.maps.Marker({position: position, map:map});   marker.setTitle(title); 
-            
-            /* // Add a listener for the click event 
-            google.maps.event.addListener(marker, 'click', function(e){ 
-            makeInfoWindow(this.position,this.title); }); */
+            //console.log(latitude + " " + longitude);
+            // Add a listener for the click event 
+            //google.maps.event.addListener(marker, 'click', function(e){ 
+            //makeInfoWindow(this.position,this.title); });
 
         } 
         

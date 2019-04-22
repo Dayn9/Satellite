@@ -3,14 +3,12 @@ const APIKEY = "qrWL5i54WiZdxSZju5asfUvvLnnfC3ZP8iufQxFW"
 const SEARCH0 = "https://api.nasa.gov/planetary/apod?api_key="
 const sscUrl = "https://sscweb.sci.gsfc.nasa.gov/WS/sscr/2"
 
-let earthRadiusKm = 6371;
-
-const testRequest = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><DataRequest xmlns="http://sscweb.gsfc.nasa.gov/schema"><TimeInterval><Start>2014-01-01T20:00:00.000Z</Start><End>2014-01-02T00:00:00.000Z</End></TimeInterval><BFieldModel><InternalBFieldModel>IGRF-10</InternalBFieldModel><ExternalBFieldModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Tsyganenko89cBFieldModel"><KeyParameterValues>KP3_3_3</KeyParameterValues></ExternalBFieldModel><TraceStopAltitude>100</TraceStopAltitude></BFieldModel><Satellites><Id>barrel2t</Id><ResolutionFactor>2</ResolutionFactor></Satellites><OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>'
+let earthRadiusKm = 6378;
 
 const rPart1 = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><DataRequest xmlns="http://sscweb.gsfc.nasa.gov/schema"><TimeInterval><Start>';
 const rPart2 = '</Start><End>'
 const rPart3 = '</End></TimeInterval><BFieldModel><InternalBFieldModel>IGRF-10</InternalBFieldModel><ExternalBFieldModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Tsyganenko89cBFieldModel"><KeyParameterValues>KP3_3_3</KeyParameterValues></ExternalBFieldModel><TraceStopAltitude>100</TraceStopAltitude></BFieldModel><Satellites><Id>';
-const rPart4 = '</Id><ResolutionFactor>2</ResolutionFactor></Satellites><OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Gse</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>';
+const rPart4 = '</Id><ResolutionFactor>2</ResolutionFactor></Satellites><OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>Geo</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Geo</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>Geo</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>';
 
 let satellites = [];
 
@@ -49,13 +47,13 @@ function dataLoaded(myresult){
             return $(this).text();
         }).get();
         let x = $(this).find('X').map(function() {
-            return $(this).text()/* / earthRadiusKm */;
+            return $(this).text();
         }).get();
         let y = $(this).find('Y').map(function() {
-            return $(this).text()/* / earthRadiusKm */;
+            return $(this).text();
         }).get();
         let z = $(this).find('Z').map(function() {
-            return $(this).text()/* / earthRadiusKm */;
+            return $(this).text();
         }).get();
 
         app.result.push({
@@ -67,13 +65,16 @@ function dataLoaded(myresult){
             y: y,
             z: z 
         });
-        
-        for(let i = 0; i < x.length; i++){
-            addMarker(getLatitude(z[i]), getLongitude(x[i], y[i]), "Satelite at time: " + time[i])
-        }
     });
 
     console.log(app.result)
+
+    for(let i = 0; i < app.result[0].x.length; i++){
+        console.log(app.result[0].x[i] / earthRadiusKm + " " + app.result[0].y[i] / earthRadiusKm + " " + app.result[0].z[i] / earthRadiusKm)
+        addMarker(getLatitude(app.result[0].z[i] / earthRadiusKm), getLongitude(app.result[0].x[i] / earthRadiusKm, app.result[0].y[i]/earthRadiusKm), "Satelite at time: " + app.result[0].time[i])
+    }
+
+    
 }
   
 function dataError(e){
@@ -99,11 +100,11 @@ function displayGroundStations(stations){
 }
 
 function getLatitude(z){
-    return Math.asin(z / earthRadiusKm) * earthRadiusKm
+    return (Math.acos(z) * 180 / Math.PI) - 90;
 }
 
 function getLongitude(x,y){
-    return(Math.atan2(y, x)) * earthRadiusKm;
+    return Math.atan2(y, x) * 180 / Math.PI;
 }
 
 $(document).ready(function() {
