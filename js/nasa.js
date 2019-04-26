@@ -97,7 +97,7 @@ function dataError(e){
 //get the satelite information
 function displayObservatories(observatories){
     let data = observatories.Observatory[1]
-    for(let i = 0; i < data.length; i++)
+    for(let i = 0; i < data.length; i++){
         app.observatories.push({
             satId: data[i].Id,
             name: data[i].Name,
@@ -105,7 +105,14 @@ function displayObservatories(observatories){
             end: data[i].EndTime[1].substring(0,23) + "Z"
         });
 
-    app.selected = app.observatories[0];
+        if(data[i].Id == storedSearchID){
+            app.selected = app.observatories[i];
+        }
+    }
+
+    if(!storedSearchID){app.selected = app.observatories[0]}
+
+    
     app.getYears();
     console.log(app.selected);
 }

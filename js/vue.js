@@ -18,6 +18,7 @@ const app = new Vue({
                         //handle the range checking here in the future
                         console.log("plotting data");
                         getData();
+                        saveLocalStoredData();
                 },
                 getYears: function(){
                         let s = parseInt(this.selected.start.substring(0,4), 10);
