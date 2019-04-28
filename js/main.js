@@ -23,11 +23,11 @@
     } 
     function drawLine(){
         console.log(path)
-        let poly = new google.maps.Polygon({
-            paths: path,
+        let poly = new google.maps.Polyline({
+            path: path,
             strokeColor : '#FFFFFF',
-            strokeWeight : 2,
-            fillOpacity: 0
+            strokeWeight : 2
+            /*fillOpacity: 0*/
         });
         poly.setMap(map);
     }

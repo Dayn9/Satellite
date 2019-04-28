@@ -9,4 +9,6 @@ const storedMonth = localStorage.getItem(monthKey);
 
 function saveLocalStoredData(){
     localStorage.setItem(searchIDKey, app.selected.satId);
+    localStorage.setItem(yearKey, app.selectedYear)
+    localStorage.setItem(monthKey, app.selectedMonth)
 }

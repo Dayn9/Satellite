@@ -68,8 +68,12 @@
                 <p>EndTime: <span v-link>{{selected.end}}</span></p>
             </div>
             <h3>Year Select</h3>
-            <select id = "year" name = "year" v-model = "selectedYear">
+            <select id = "year" name = "year" v-model = "selectedYear" v-on:click = "getMonths">
                 <option v-for = "y in years" v-bind:value = "y">{{y}}</option>
+            </select>
+            <h3>Month Select</h3>
+            <select id = "month" name = "month" v-model = "selectedMonth">
+                <option v-for = "m in months" v-bind:value = "m">{{m}}</option>
             </select>
             <br>
             <button id = "plotButton" v-on:click = "plot"> Plot</button>
