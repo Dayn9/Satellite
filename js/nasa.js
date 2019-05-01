@@ -11,10 +11,14 @@ const rPart4 = '</Id><ResolutionFactor>10</ResolutionFactor></Satellites><Output
 
 let satellites = []; //list of all the available satelites
 
+let tFormat;
+
 function getData(){
 
-    let request = rPart1 + getStartTime() + 
-                  rPart2 + getEndTime() + 
+    tFormat = new TimeFormatter(app.selected.start, app.selected.end, app.selectedYear, app.selectedMonth);
+
+    let request = rPart1 + tFormat.getStartTime() + 
+                  rPart2 + tFormat.getEndTime() + 
                   rPart3 + app.selected.satId +
                   rPart4; 
     console.log(request);
@@ -30,20 +34,6 @@ function getData(){
         error: dataError
     });
 }  
-
-//start of seacrh period
-function getStartTime(){
-    return app.selectedYear + "-" + (app.selectedMonth < 10 ? "0" : "") + app.selectedMonth + app.selected.start.substring(7, 24);
-    
-}
-
-//end of search period
-function getEndTime(){
-    if(app.selectedYear == parseInt(app.selected.end.substring(0,4))){
-        return selected.end;
-    }
-    return (app.selectedYear + 1)  + "-" + (app.selectedMonth < 10 ? "0" : "") + app.selectedMonth + app.selected.start.substring(7, 24);
-}
 
 function dataLoaded(myresult){
 
@@ -113,7 +103,6 @@ function displayObservatories(observatories){
     if(!storedSearchID){app.selected = app.observatories[0]}
     app.getYears();
     app.getMonths();
-    console.log(app.selected);
 }
 
 //converts geo coordinates to latitude

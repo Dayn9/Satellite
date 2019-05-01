@@ -11,7 +11,6 @@
     function addMarker(latitude, longitude, title) {  
             let position = {lat:latitude,lng:longitude}; 
             if(position.lat) { 
-                console.log(position);
                 path.push(position);
             } 
             
