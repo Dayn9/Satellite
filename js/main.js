@@ -8,6 +8,11 @@
             infowindow = new google.maps.InfoWindow({ map: map, position: position, content: "<b>" + msg + "</b>"  }); 
         } 
     
+    function newPath(){
+        path = [];
+        app.status = "constructing path";
+    }
+
     function addMarker(latitude, longitude, title) {  
             let position = {lat:latitude,lng:longitude}; 
             if(position.lat) { 
@@ -21,11 +26,11 @@
             */
     } 
     function drawLine(){
-        console.log(path)
+        app.status = path.length + " results found"
         let poly = new google.maps.Polyline({
             path: path,
-            strokeColor : '#FFFFFF',
-            strokeWeight : 2
+            strokeColor : '#000000',
+            strokeWeight : 5
             /*fillOpacity: 0*/
         });
         poly.setMap(map);

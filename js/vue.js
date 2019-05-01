@@ -14,14 +14,13 @@ const app = new Vue({
                 selectedYear: 1990,
                 months: [],
                 selectedMonth: 1,
-                maxResults: 150
+                maxResults: 150,
+
+                status: "Loading..."
         },
         methods: {
                 plot: function(){
-                        //handle the range checking here in the future
-                        console.log("plotting data");
-
-                        console.log(this.selected);
+                        this.status = "plotting..."
                         getData();
                         addSearchToFirebase();
                         saveLocalStoredData();

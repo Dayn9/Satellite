@@ -41,7 +41,6 @@ function getData(){
 //called when the data from positions request is loaded
 //copied and modified from: https://sscweb.sci.gsfc.nasa.gov/WebServices/REST/#Get_Locations_POST
 function dataLoaded(myresult){
-
     app.result = [];
 
     $('Data', myresult).each(function() {
@@ -75,18 +74,23 @@ function dataLoaded(myresult){
         });
     });
 
+    if(!app.result[0]){
+        app.status = "failed to find data";
+        return;
+    }
+
     let max = app.result[0].x.length > app.maxResults ? app.maxResults : app.result[0].x.length;
+    newPath();
     for(let i = 0; i < max; i++){
         addMarker(getLatitude(app.result[0].z[i] / earthRadiusKm), getLongitude(app.result[0].x[i] / earthRadiusKm, app.result[0].y[i]/earthRadiusKm), "Satelite at time: " + app.result[0].time[i])
     }
-
     //draw out the path of the satellite
     drawLine();
 }
 
 //error
 function dataError(e){
-    console.log("An error occured");
+    app.status = "error reading in data. try selecting a different date range";
 }
 
 //get the satelite information
@@ -108,11 +112,13 @@ function displayObservatories(observatories){
     if(!storedSearchID){app.selected = app.observatories[0]}
     app.getYears();
     app.getMonths();
+    app.status = "ready to plot";
 }
 
 //converts geo coordinates to latitude
 function getLatitude(z){
-    return (Math.acos(z) * 180 / Math.PI) - 90;
+    z *= Math.PI / 180; //convert to radians
+    return (Math.acos(z) * 180 / Math.PI) - 90; //do the math and convert back to degrees
 }
 
 //converts geo coordinates to longitude
