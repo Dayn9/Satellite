@@ -13,7 +13,8 @@ const app = new Vue({
                 years: [],
                 selectedYear: 1990,
                 months: [],
-                selectedMonth: 1
+                selectedMonth: 1,
+                maxResults: 150
         },
         methods: {
                 plot: function(){
@@ -47,6 +48,10 @@ const app = new Vue({
                                 this.months[m - s] = m;
                         }
                         this.selectedMonth = this.months[0];
+                },
+                zoomOut: function(){
+                        map.setZoom(2);
+                        map.setCenter({ lat: 0, lng: 0 })
                 }
         }
 });

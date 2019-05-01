@@ -7,6 +7,7 @@
     <!--External Stylesheets-->
  <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
  <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+ <link type = "text/css" rel = "stylesheet" href = "css/main.css">
 </head>
 <body>
 
@@ -48,14 +49,16 @@
 	
 </script>
 
-<div id = "app"> 
+<div id = "appAdmin"> 
     <h1>{{title}}</h1>
+
+    <p><a href="index.html">View web app</a></p>
 
     <table>
         <tr>
             <th>Satellite ID</th>
-            <th>Searched Year</th>
-            <th>Searched Month</th>
+            <th>Year</th>
+            <th>Month</th>
         </tr>
         <tr v-for = "s in searches">
             <td>{{s.satId}}</td>
@@ -70,7 +73,7 @@
 
 <script>
     const app = new Vue({
-        el: '#app',
+        el: '#appAdmin',
         data: {
             title : "Satellite Searches",
             searches : {}

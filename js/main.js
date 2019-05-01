@@ -29,6 +29,7 @@
             /*fillOpacity: 0*/
         });
         poly.setMap(map);
+
     }
         
     function initMap() {
@@ -42,7 +43,3 @@
 
         map.mapTypeId = 'satellite'; map.setTilt(45); 
     }
-
-document.querySelector("#worldZoomButton").onclick = function(){map.setZoom(1);};
-document.querySelector("#defaultZoomButton").onclick = function(){map.setZoom(16);};
-document.querySelector("#buildingZoomButton").onclick = function(){map.setZoom(20);};        

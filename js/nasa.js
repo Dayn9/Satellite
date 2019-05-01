@@ -15,14 +15,17 @@ let tFormat;
 
 function getData(){
 
+    //set up the time formatter
     tFormat = new TimeFormatter(app.selected.start, app.selected.end, app.selectedYear, app.selectedMonth);
 
+    //construct the request message
     let request = rPart1 + tFormat.getStartTime() + 
                   rPart2 + tFormat.getEndTime() + 
                   rPart3 + app.selected.satId +
                   rPart4; 
-    console.log(request);
 
+    //make the request
+    //XML used because it was easier to follow through the NASA documentation
     $.ajax({
         type: 'POST',
         url: sscUrl + '/locations',
@@ -35,6 +38,8 @@ function getData(){
     });
 }  
 
+//called when the data from positions request is loaded
+//copied and modified from: https://sscweb.sci.gsfc.nasa.gov/WebServices/REST/#Get_Locations_POST
 function dataLoaded(myresult){
 
     app.result = [];
@@ -70,12 +75,12 @@ function dataLoaded(myresult){
         });
     });
 
-    console.log(app.result)
-
-    for(let i = 0; i < 100/*app.result[0].x.length*/; i++){
+    let max = app.result[0].x.length > app.maxResults ? app.maxResults : app.result[0].x.length;
+    for(let i = 0; i < max; i++){
         addMarker(getLatitude(app.result[0].z[i] / earthRadiusKm), getLongitude(app.result[0].x[i] / earthRadiusKm, app.result[0].y[i]/earthRadiusKm), "Satelite at time: " + app.result[0].time[i])
     }
 
+    //draw out the path of the satellite
     drawLine();
 }
 
@@ -116,23 +121,5 @@ function getLongitude(x,y){
 }
 
 $(document).ready(function() {
-    /*$('#dataTableVisibility').click(function() {
-        $('#data').toggle();
-    });*/
-    document.body.style.cursor = 'wait';
     $.get(sscUrl + '/observatories', displayObservatories, 'json');
-    //$.get(sscUrl + '/groundStations', displayGroundStations, 'json');
 });
-
-
-
-/*
-https://stackoverflow.com/questions/1185408/converting-from-longitude-latitude-to-cartesian-coordinates
-
-lat = asin(z / R)
-lon = atan2(y, x)
-
-x = R * cos(lat) * cos(lon)
-y = R * cos(lat) * sin(lon)
-z = R *sin(lat)
-*/

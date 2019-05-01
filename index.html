@@ -4,81 +4,41 @@
     <title>Satellite Tracker</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
-    <style>
-      html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            height: 100%;
-        }
-        
-        button{
-            position: absolute;
-            color: red;
-            font-weight: bold;
-            height: 30px;
-            width: 150px;
-            z-index: 100;
-        }    
-        
-        #worldZoomButton{
-            top: 70px;
-            left: 10px;
-        }
-        
-        #defaultZoomButton{
-            top: 110px;
-            left: 10px;
-        }
-        
-        #buildingZoomButton{
-            top: 150px;
-            left: 10px;
-        }
 
-        #app{
-            position: absolute;
-            z-index: 100;
-            top: 200px;
-            left: 10px;
-            background-color: white;
-            padding: 10px
-        }
+    <!--External Stylesheets-->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+    <link type = "text/css" rel = "stylesheet" href = "css/main.css">
 
-    </style>
-    
   </head>
   <body>
     <div id="map"></div>
-    <p><button id = "worldZoomButton">WorldZoom(1)</button></p>
-    <p><button id = "defaultZoomButton">DefaultZoom(16)</button></p>
-    <p><button id = "buildingZoomButton">BuildingZoom(20)</button></p>
+    
 
     <div id = "app"> 
-            <h3>Satellite Select</h3>
+            <h1>Satellite Select</h1>
             <select id = "sat" name = "observe" size = "10" v-model = "selected" v-on:click = "getYears">
                     <option v-for = "o in observatories" v-bind:value = "o">{{o.name}}</option>
             </select>
             <hr>
             <satDisplay v-bind:selected = "selected"></satDisplay>
-            <h3>Year Select</h3>
+            <h3>Year - Month Select</h3>
             <select id = "year" name = "year" v-model = "selectedYear" v-on:click = "getMonths">
                 <option v-for = "y in years" v-bind:value = "y">{{y}}</option>
             </select>
-            <h3>Month Select</h3>
             <select id = "month" name = "month" v-model = "selectedMonth">
                 <option v-for = "m in months" v-bind:value = "m">{{m}}</option>
             </select>
+            <h3>Max Results</h3>
+            <input type="range" min="50" max="250" v-model = "maxResults" class="slider" id="maxResults">
+            <span>{{maxResults}}</span>
             <br>
             <button id = "plotButton" v-on:click = "plot"> Plot</button>
+            <button id = "worldZoomButton" v-on:click = "zoomOut">Reset View</button>
             <hr>
     </div>
 
-    <!--External Stylesheets-->
-    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+    
     
     <!--External Scripts-->
     <script src="https://unpkg.com/@babel/polyfill@latest/dist/polyfill.min.js"></script>

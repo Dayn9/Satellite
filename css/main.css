@@ -1,0 +1,63 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#map {
+    height: 100%;
+}
+
+button{
+    color: green;
+    font-weight: bold;
+    height: 30px;
+    width: 150px;
+    z-index: 100;
+    border-radius: 5px;
+}    
+
+#app{
+    position: absolute;
+    z-index: 100;
+    transition: 1s;
+    top: 60px;
+    left: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#appAdmin{
+    padding: 10px;
+}
+
+option:nth-child(even) {background: #F0F0F0}
+option:nth-child(odd) {background: #FFF}
+
+h1{
+    font-weight: bolder;
+}
+h2{
+    font-weight: bold;
+}
+h3{
+    margin-top: 20px;
+}
+
+#sat{
+    width: 100%;
+}
+table{
+    width: 500px;
+    text-align: center;
+    border: 1px solid;
+}
+
+tr:nth-child(even) {background: #F0F0F0}
+tr:nth-child(odd) {background: #FFF}
+
+th{
+    background-color: grey;
+    font-size: 1.2em;
+}
