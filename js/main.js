@@ -1,4 +1,4 @@
-    var map;
+    let map;
     let infowindow;
 
     let path = [];
