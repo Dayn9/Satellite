@@ -62,11 +62,7 @@
                     <option v-for = "o in observatories" v-bind:value = "o">{{o.name}}</option>
             </select>
             <hr>
-            <div>
-                <h1 v-link>{{selected.name}}</h1>
-                <p>StartTime: <span v-link>{{selected.start}}</span></p>
-                <p>EndTime: <span v-link>{{selected.end}}</span></p>
-            </div>
+            <satDisplay v-bind:selected = "selected"></satDisplay>
             <h3>Year Select</h3>
             <select id = "year" name = "year" v-model = "selectedYear" v-on:click = "getMonths">
                 <option v-for = "y in years" v-bind:value = "y">{{y}}</option>
@@ -96,6 +92,7 @@
     <script src = "js/vue.js"></script>
     <script src="js/nasa.js"></script>
     <script src = "js/main.js"></script>
+    <script src = "js/components.js"></script>
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPaeHLaP4wtPBZATsnq-B2uKuAHb52QKo&callback=initMap"
     async defer></script>
