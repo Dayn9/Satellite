@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+    <title>Satellite Admin</title>
+    
+    <!--External Stylesheets-->
+ <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+ <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+</head>
+<body>
+
+    <!--External Scripts-->
+ <script src="https://unpkg.com/@babel/polyfill@latest/dist/polyfill.min.js"></script>
+ <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+ <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
+
+<script>
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDa9kMegA07hGtZX5p4iOEKgRK-_x4nPYI",
+    authDomain: "satellite-617f2.firebaseapp.com",
+    databaseURL: "https://satellite-617f2.firebaseio.com",
+    projectId: "satellite-617f2",
+    storageBucket: "satellite-617f2.appspot.com",
+    messagingSenderId: "991179971792"
+  };
+  firebase.initializeApp(config);
+
+  let database = firebase.database();
+
+  console.log(firebase); // #3 - make sure firebase is loaded
+	
+  // #4 This is where the magic happens!
+  firebase.database().ref("searches").on("value", dataChanged, firebaseError);
+	
+  function dataChanged(data){
+    console.log(data.val());
+    app.searches = data.val();
+    console.log(app.searches);
+  }
+	
+  function firebaseError(error){
+    console.log(error);
+  }
+	
+</script>
+
+<div id = "app"> 
+    <h1>{{title}}</h1>
+
+    <table>
+        <tr>
+            <th>Satellite ID</th>
+            <th>Searched Year</th>
+            <th>Searched Month</th>
+        </tr>
+        <tr v-for = "s in searches">
+            <td>{{s.satId}}</td>
+            <td>{{s.year}}</td>
+            <td>{{s.month}}</td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            title : "Satellite Searches",
+            searches : {}
+        },
+    });
+
+</script>
+
+</body>
+</html>

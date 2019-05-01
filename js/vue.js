@@ -19,7 +19,10 @@ const app = new Vue({
                 plot: function(){
                         //handle the range checking here in the future
                         console.log("plotting data");
+
+                        console.log(this.selected);
                         getData();
+                        addSearchToFirebase();
                         saveLocalStoredData();
                 },
                 getYears: function(){
