@@ -15,7 +15,7 @@ const app = new Vue({
                 months: [],
                 selectedMonth: 1,
                 maxResults: 150,
-
+                color: `#000000`,
                 status: "Loading..."
         },
         methods: {

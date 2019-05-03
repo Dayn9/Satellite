@@ -30,7 +30,7 @@
         app.status = path.length + " results found"
         let poly = new google.maps.Polyline({
             path: path,
-            strokeColor : '#000000',
+            strokeColor: app.color,
             strokeWeight : 5
             /*fillOpacity: 0*/
         });

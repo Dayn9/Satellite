@@ -18,22 +18,24 @@
     <div id = "app"> 
             <h1>Satellite Select</h1>
             <select id = "sat" name = "observe" size = "10" v-model = "selected" v-on:click = "getYears">
-                    <option v-for = "o in observatories" v-bind:value = "o">{{o.name}}</option>
+              <option v-for = "o in observatories" v-bind:value = "o">{{o.name}}</option>
             </select>
             <hr>
             <satDisplay v-bind:selected = "selected"></satDisplay>
-            <h3>Year - Month Select</h3>
+            <h3>Year - Month - Color</h3>
             <select id = "year" name = "year" v-model = "selectedYear" v-on:click = "getMonths">
-                <option v-for = "y in years" v-bind:value = "y">{{y}}</option>
+              <option v-for = "y in years" v-bind:value = "y">{{y}}</option>
             </select>
             <select id = "month" name = "month" v-model = "selectedMonth">
-                <option v-for = "m in months" v-bind:value = "m">{{m}}</option>
+              <option v-for = "m in months" v-bind:value = "m">{{m}}</option>
             </select>
+            <input type = "color" id = "color" v-model = "color">
             <h3>Max Results</h3>
             <input type="range" min="50" max="250" v-model = "maxResults" class="slider" id="maxResults">
             <span>{{maxResults}}</span>
             <br>
             <button id = "plotButton" v-on:click = "plot"> Plot</button>
+            
             <button id = "worldZoomButton" v-on:click = "zoomOut">Reset View</button>
             <button id = "clearButton" v-on:click = "clear">Clear Map</button>
             <hr>
