@@ -15,7 +15,7 @@ function saveLocalStoredData(){
 
 
   // Initialize Firebase
-  var config = {
+  const config = {
     apiKey: "AIzaSyDa9kMegA07hGtZX5p4iOEKgRK-_x4nPYI",
     authDomain: "satellite-617f2.firebaseapp.com",
     databaseURL: "https://satellite-617f2.firebaseio.com",

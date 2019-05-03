@@ -51,6 +51,9 @@ const app = new Vue({
                 zoomOut: function(){
                         map.setZoom(2);
                         map.setCenter({ lat: 0, lng: 0 })
+                },
+                clear: function(){
+                        removeAllLines();
                 }
         }
 });

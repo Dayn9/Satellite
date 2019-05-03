@@ -2,11 +2,12 @@
     let infowindow;
 
     let path = [];
-    
-     function makeInfoWindow(position,msg){   
-            if(infowindow) infowindow.close(); 
-            infowindow = new google.maps.InfoWindow({ map: map, position: position, content: "<b>" + msg + "</b>"  }); 
-        } 
+    let lines = [];
+
+    function makeInfoWindow(position,msg){   
+        if(infowindow) infowindow.close(); 
+        infowindow = new google.maps.InfoWindow({ map: map, position: position, content: "<b>" + msg + "</b>"  }); 
+    } 
     
     function newPath(){
         path = [];
@@ -34,7 +35,14 @@
             /*fillOpacity: 0*/
         });
         poly.setMap(map);
+        lines.push(poly);
+    }
 
+    function removeAllLines(){
+        for(let l = 0; l < lines.length; l++){
+            lines[l].setMap(null);
+        }
+        lines = [];
     }
         
     function initMap() {
